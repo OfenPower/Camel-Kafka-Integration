@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>hochschule</groupId>
+  <artifactId>sa</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>2.25.1</version>
+		</dependency>
+		
+		
+		<dependency>
+    		<groupId>org.apache.camel</groupId>
+    		<artifactId>camel-kafka</artifactId>
+    		<version>2.25.1</version>
+		</dependency>
+		
+		<dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+        	<version>1.7.21</version> <!-- or use LATEST -->
+    	</dependency>
+    	
+    	<dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-simple</artifactId>
+        	<version>1.7.21</version> <!-- or use LATEST -->
+    	</dependency>
+		
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+	</dependencies>
+  <name>eventdrivenarchitecture</name>
+</project>
