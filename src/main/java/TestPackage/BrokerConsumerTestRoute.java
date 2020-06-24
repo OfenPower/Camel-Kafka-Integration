@@ -8,7 +8,7 @@ public class BrokerConsumerTestRoute extends RouteBuilder {
 	public void configure() throws Exception {
 
 		// Kafka Consumer Endpoint URI
-		String fromKafka = "kafka:loan-request?brokers=localhost:9092&groupId=groupA";
+		String fromKafka = "kafka:loan-request?brokers=localhost:9092&groupId=groupA&valueDeserializer=Message.LoanRequestMessageDeserializer";
 
 		// Von Kafka consumen
 		// from(fromKafka).unmarshal().serialization().process(new

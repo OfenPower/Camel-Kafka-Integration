@@ -142,9 +142,11 @@ public class LoanRequestMain extends Application {
 			ctx.start();
 			// loanRequestMessage Objekt an LoanRequestBrokerRoute schicken
 			ProducerTemplate producerTemplate = ctx.createProducerTemplate();
+			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);
 			// Nach 5 Sek. Button wieder enablen
 			Thread.sleep(5000);
+			producerTemplate.stop();
 			ctx.stop();
 			requestLoanButton.setVisible(true);
 

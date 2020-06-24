@@ -3,6 +3,8 @@ package TestPackage;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
+import Message.LoanRequestMessage;
+
 public class LoanRequestProcessorTest implements Processor {
 
 	@Override
@@ -14,25 +16,25 @@ public class LoanRequestProcessorTest implements Processor {
 
 		System.out.println("Process before getIn()");
 
-		// LoanRequestMessage body = exchange.getIn().getBody(LoanRequestMessage.class);
+		LoanRequestMessage body = exchange.getIn().getBody(LoanRequestMessage.class);
 
-		// LoanRequestMessage body = (LoanRequestMessage)
-		// exchange.getIn().getBody(Object.class);
-
-		String body = exchange.getIn().getBody(String.class);
+		// Object body = exchange.getIn().getBody(Object.class);
 
 		if (body == null) {
 			System.out.println("body = null!");
 		}
 
 		System.out.println("Process after getIn()");
-		System.out.println(body);
+		System.out.println(body.toString());
 
-//		System.out.println("Received Credit Request: " + body.getCreditRequest());
-//		System.out.println("Received Current Capital: " + body.getCurrentCapital());
-//		System.out.println("Received Monthly Income: " + body.getMonthlyIncome());
+		System.out.println("Received Credit Request: " + body.getCreditRequest());
+		System.out.println("Received Current Capital: " + body.getCurrentCapital());
+		System.out.println("Received Monthly Income: " + body.getMonthlyIncome());
 
-		// exchange.getIn().setBody("Hello! " + body);
+		exchange.getIn()
+				.setBody("Received Credit Request: " + body.getCreditRequest() + "\n" + "Received Current Capital: "
+						+ body.getCurrentCapital() + "\n" + "Received Monthly Income: " + body.getMonthlyIncome()
+						+ "\n");
 
 		// process blöaba
 
