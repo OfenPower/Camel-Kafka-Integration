@@ -1,11 +1,11 @@
-package GUI;
+
+package loanbroker;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
-import Message.LoanRequestMessage;
-import TestPackage.LoanRequestBrokerRoute;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class LoanRequestMain extends Application {
+public class ClientMain extends Application {
 
 	private double creditRequestValue;
 	private double currentCapitalValue;
@@ -27,11 +27,10 @@ public class LoanRequestMain extends Application {
 
 	private Button requestLoanButton;
 
-	// private boolean stopCamel = false;
-
 	public static void main(String[] args) {
 		launch(args);
 
+		// startLoanRequest(4000, 200, 100);
 	}
 
 	@Override
@@ -73,9 +72,11 @@ public class LoanRequestMain extends Application {
 		// Button
 		requestLoanButton = new Button("Request Loan");
 		requestLoanButton.setOnAction(e -> {
-			// Loan Request starten, falls Input ints/doubles und nicht leer sind
+			// Input Werte zu doubles parsen
 			if (parseInputValues(creditRequestTextField.getText(), currentCapitalTextField.getText(),
 					monthlyIncomeTextField.getText())) {
+
+				// LoanRequest über Camel/Kafka mit geparsten Werten starten
 				startLoanRequest(creditRequestValue, currentCapitalValue, monthlyIncomeValue);
 			}
 
@@ -95,15 +96,15 @@ public class LoanRequestMain extends Application {
 		String monthlyIncome = mi;
 
 		if (!checkInput(creditRequest)) {
-			System.out.println("Credit Request must not be empty and consist only of integer/double values");
+			System.out.println("Credit Request must at least be 2 digits long and consist only of numbers");
 			return false;
 		}
 		if (!checkInput(currentCapital)) {
-			System.out.println("Current Capital must not be empty and consist only of integer/double values");
+			System.out.println("Current Capital must at least be 2 digits long and consist only of numbers");
 			return false;
 		}
 		if (!checkInput(monthlyIncome)) {
-			System.out.println("Monthly Income must not be empty and consist only of integer/double values");
+			System.out.println("Monthly Income must at least be 2 digits long and consist only of numbers");
 			return false;
 		}
 
@@ -133,26 +134,40 @@ public class LoanRequestMain extends Application {
 		try {
 			// Loan Request Werte in Message-Objekt verpacken
 			LoanRequestMessage loanRequestMessage = new LoanRequestMessage(cr, cc, mi);
+
 			// CamelContext starten initialisieren
 			CamelContext ctx = new DefaultCamelContext();
-			// Producer Route zu Kafka aufbauen
-			LoanRequestBrokerRoute toBroker = new LoanRequestBrokerRoute();
-			ctx.addRoutes(toBroker);
+
+			// Producer Route zum Broker über Kafka aufbauen
+			ctx.addRoutes(new RouteBuilder() {
+
+				@Override
+				public void configure() throws Exception {
+					// Kafka Producer Endpoint URI
+					String toKafka = "kafka:loan-request?brokers=localhost:9092&serializerClass=loanbroker.LoanRequestMessageSerializer";
+
+					// Alles was an "direct:start" geschickt wird an Kafka weiterleiten
+					from("direct:start").to(toKafka);
+
+				}
+			});
+
 			// Camel Context starten
 			ctx.start();
+
 			// loanRequestMessage Objekt an LoanRequestBrokerRoute schicken
 			ProducerTemplate producerTemplate = ctx.createProducerTemplate();
 			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);
-			// Nach 5 Sek. Button wieder enablen
+
 			Thread.sleep(5000);
+
+			// Producer und CamelContext schließen
 			producerTemplate.stop();
 			ctx.stop();
-			requestLoanButton.setVisible(true);
 
-//			if (stopCamel) {
-//				ctx.stop();
-//			}
+			// Request Button wieder enablen
+			requestLoanButton.setVisible(true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
