@@ -25,7 +25,7 @@ public class LoanBrokerMain {
 			 * } });
 			 */
 			ctx.start();
-			Thread.sleep(5000);
+			System.in.read();
 			System.out.println("Program End");
 			ctx.stop();
 		} catch (Exception e) {

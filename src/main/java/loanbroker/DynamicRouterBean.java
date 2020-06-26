@@ -22,7 +22,8 @@ public class DynamicRouterBean {
             {
                 for(JsonNode objNode : node)
                 {
-                    result.add(objNode.toString());
+                    result.add("direct:" + objNode.asText().toString());
+                    System.out.println("DynamicRouter added endpoint: " + objNode.asText().toString() + " to recipientlist.");
                 }
             }
             else

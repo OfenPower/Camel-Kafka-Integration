@@ -44,16 +44,16 @@ public class LoanBrokerRoute extends RouteBuilder {
 				//.to("jms:queue:bank1", "jms:queue:bank2", "jms:queue:bank3").end()
 				// and prepare the reply message
 				.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
-					.bean("DynamicRouterBean","route")
+					.bean(DynamicRouterBean.class,"route")
 				.end()
 
 				.process(new ReplyProcessor());
 
 		// Each bank processor will process the message and put the response message
 		// back
-		from("jms:queue:bank1").process(new BankProcessor("bank1"));
-		from("jms:queue:bank2").process(new BankProcessor("bank2"));
-		from("jms:queue:bank3").process(new BankProcessor("bank3"));
+		from("direct:bank01").process(new PrintMessageProcessor());
+		from("direct:bank02").process(new PrintMessageProcessor());
+		from("direct:bank03").process(new PrintMessageProcessor());
 	}
 
 }
