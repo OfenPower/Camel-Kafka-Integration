@@ -7,7 +7,8 @@ public class LoanBrokerRoute extends RouteBuilder {
 	@Override
 	public void configure() {
 
-		from("jms:queue:loan")
+		String fromKafka = "kafka:loan-request?brokers=localhost:9092&groupId=groupA&valueDeserializer=loanbroker.LoanRequestMessageDeserializer";
+		from(fromKafka)
 				// let the credit agency do the first work
 				.process(new CreditAgencyProcessor())
 				// send the request to the three banks
