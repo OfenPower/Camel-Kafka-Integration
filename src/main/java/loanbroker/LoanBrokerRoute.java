@@ -9,6 +9,15 @@ public class LoanBrokerRoute extends RouteBuilder {
 
 		String fromKafka = "kafka:loan-request?brokers=localhost:9092&groupId=groupA&valueDeserializer=loanbroker.LoanRequestMessageDeserializer";
 		from(fromKafka)
+				// translate the LoanRequestMessage to canonical Json model
+				/*
+				{
+					"creditRequest" : 123.4,
+					"currentCapital" : 123.4
+					"monthlyIncome" : 123.4
+				}
+				 */
+				.process(new LoanRequestToJsonProcessor())
 				// let the credit agency do the first work
 				.process(new CreditAgencyProcessor())
 				// send the request to the three banks
