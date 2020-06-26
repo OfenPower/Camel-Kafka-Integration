@@ -29,9 +29,13 @@ public class LoanBrokerRoute extends RouteBuilder {
 				 */
 				.process(new CreditAgencyProcessor())
 				// send the request to the three banks
-				.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
-				.to("jms:queue:bank1", "jms:queue:bank2", "jms:queue:bank3").end()
+				//.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
+				//.to("jms:queue:bank1", "jms:queue:bank2", "jms:queue:bank3").end()
 				// and prepare the reply message
+				.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
+					.bean("DynamicRouterBean","route")
+				.end()
+
 				.process(new ReplyProcessor());
 
 		// Each bank processor will process the message and put the response message
