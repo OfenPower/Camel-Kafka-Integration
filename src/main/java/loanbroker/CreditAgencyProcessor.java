@@ -1,12 +1,11 @@
 package loanbroker;
 
-import java.util.Random;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class CreditAgencyProcessor implements Processor {
 
@@ -18,6 +17,7 @@ public class CreditAgencyProcessor implements Processor {
 		String jsonString = exchange.getIn().getBody(String.class);
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = mapper.readTree(jsonString);
+		ObjectNode obj = (ObjectNode) node;
 
 		// Werte aus json auslesen
 		double creditRequest = node.get("creditRequest").asDouble();
@@ -25,26 +25,35 @@ public class CreditAgencyProcessor implements Processor {
 		double monthlyIncome = node.get("monthlyIncome").asDouble();
 
 		// Score zwischen 1-10 vergeben
-		int score;
+		int score = 1;
 		// Wenn mehr Kapital als CreditRequest vorhanden ist => Beste Wertung
 		if (currentCapital >= creditRequest) {
 			score = 10;
 		}
 		// Wenn kein/negatives Kapital vorhanden ist => Schlechteste Wertung
-		if (currentCapital <= 0) {
+		else if (currentCapital <= 0) {
 			score = 1;
 		}
-		// Wenn man nach mehr als 10 Jahren Einkommen noch nicht an den CreditRequest
-		// rankäme => Schlehctere Wertung
-		if (currentCapital + (monthlyIncome * 12 * 10) < creditRequest) {
+		// Wenn man nach 10 Jahren Einkommen noch nicht an den CreditRequest
+		// rankäme => Schlechtere Wertung
+		else if (currentCapital + (monthlyIncome * 12 * 10) < creditRequest) {
 			score = 3;
 		}
+		// Wenn man nach 5 Jahren Einkommen noch nicht an den CreditRequest
+		// rankäme => Mittlere Wertung
+		else if (currentCapital + (monthlyIncome * 12 * 5) < creditRequest) {
+			score = 5;
+		}
+		// Falls man in unter 5 Jahren den Kredit abbezahlen könnte => Bessere Wertung
+		else {
+			score = 7;
+		}
 
-		String ssn = exchange.getIn().getHeader(Constants.PROPERTY_SSN, String.class);
-		Random rand = new Random();
-		// int score = (int) (rand.nextDouble() * 600 + 300);
-		// int hlength = (int) (rand.nextDouble() * 19 + 1);
+		// Score als neues json Feld an die Message dranhängen
+		obj.put("creditScore", score);
 
+		// Message mit Credit Score rausschicken
+		exchange.getIn().setBody(node.toString());
 	}
 
 }
