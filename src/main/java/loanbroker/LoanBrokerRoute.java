@@ -13,8 +13,8 @@ public class LoanBrokerRoute extends RouteBuilder {
 				/*
 				{
 					"creditRequest" : 123.4,
-					"currentCapital" : 123.4
-					"monthlyIncome" : 123.4
+					"currentCapital" : 123.4,
+					"monthlyIncome" : 123.4,
 				}
 				 */
 				.process(new LoanRequestToJsonProcessor())
@@ -22,12 +22,23 @@ public class LoanBrokerRoute extends RouteBuilder {
 				/*
 				{
 					"creditRequest" : 123.4,
-					"currentCapital" : 123.4
-					"monthlyIncome" : 123.4
+					"currentCapital" : 123.4,
+					"monthlyIncome" : 123.4,
 					"creditScore" : 5
 				}
 				 */
 				.process(new CreditAgencyProcessor())
+				// check Credit Score and add recipient banks according to the credit score
+				/*
+				{
+					"creditRequest" : 123.4,
+					"currentCapital" : 123.4,
+					"monthlyIncome" : 123.4,
+					"creditScore" : 5,
+					"bankList" : [bank01, bank02, bank03]
+				}
+				*/
+				.process(new RuleBasedBankProcessor())
 				// send the request to the three banks
 				//.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
 				//.to("jms:queue:bank1", "jms:queue:bank2", "jms:queue:bank3").end()
