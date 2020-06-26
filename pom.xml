@@ -40,6 +40,13 @@
     		<artifactId>commons-lang3</artifactId>
     		<version>3.5</version>
 		</dependency>
+
+	  <dependency>
+		  <groupId>org.openjfx</groupId>
+		  <artifactId>javafx-controls</artifactId>
+		  <version>14</version>
+	  </dependency>
+
 	</dependencies>
   <name>eventdrivenarchitecture</name>
 </project>
