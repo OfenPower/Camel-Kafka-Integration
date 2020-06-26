@@ -18,7 +18,15 @@ public class LoanBrokerRoute extends RouteBuilder {
 				}
 				 */
 				.process(new LoanRequestToJsonProcessor())
-				// let the credit agency do the first work
+				// calculate a credit score and add it as a new field
+				/*
+				{
+					"creditRequest" : 123.4,
+					"currentCapital" : 123.4
+					"monthlyIncome" : 123.4
+					"creditScore" : 5
+				}
+				 */
 				.process(new CreditAgencyProcessor())
 				// send the request to the three banks
 				.multicast(new BankResponseAggregationStrategy()).parallelProcessing()
