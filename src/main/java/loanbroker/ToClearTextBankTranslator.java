@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
-public class ToClearTextTranslator implements Processor {
+public class ToClearTextBankTranslator implements Processor {
     /*
      Translates a message from the given format
      {

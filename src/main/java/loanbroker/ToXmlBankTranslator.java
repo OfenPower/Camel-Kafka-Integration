@@ -20,8 +20,6 @@ public class ToXmlBankTranslator implements Processor {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		String xml = objectMapper.writeValueAsString(jsonString);
 		
-		System.out.println(xml);
-		
 		// XML Message rausschicken
 		exchange.getIn().setBody(xml);
 		

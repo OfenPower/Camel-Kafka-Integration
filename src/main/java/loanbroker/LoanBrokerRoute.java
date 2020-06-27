@@ -51,9 +51,9 @@ public class LoanBrokerRoute extends RouteBuilder {
 
 		// Each bank processor will process the message and put the response message
 		// back
-		from("direct:bank01").process(new PrintMessageProcessor());
-		from("direct:bank02").process(new PrintMessageProcessor());
-		from("direct:bank03").process(new PrintMessageProcessor());
+		from("direct:bank01").process(new ToJsonBankTranslator()).process(new PrintMessageProcessor());
+		from("direct:bank02").process(new ToXmlBankTranslator()).process(new PrintMessageProcessor());
+		from("direct:bank03").process(new ToClearTextBankTranslator()).process(new PrintMessageProcessor());
 	}
 
 }
