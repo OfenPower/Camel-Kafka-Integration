@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-public class ToXmlBankProcessor implements Processor {
+public class ToXmlBankTranslator implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
