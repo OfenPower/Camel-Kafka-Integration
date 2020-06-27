@@ -17,7 +17,7 @@ public class ToClearTextBankTranslator implements Processor {
          "bankList" : [bank01, bank02, bank03]
      }
      to the format required by the JsonBank
-     requestedFunds : 123.4, startCapital : 123.4, monthlyIncome : 123.4\0
+     requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5\0
 
       */
     @Override
@@ -27,8 +27,9 @@ public class ToClearTextBankTranslator implements Processor {
         JsonNode inputNode = mapper.readTree(exchange.getIn().getBody(String.class));
 
         String outputString = "requestedFunds " + inputNode.get("creditRequest")
-                + ", startCapital " + inputNode.get("currentCapital")
+                + ",startCapital " + inputNode.get("currentCapital")
                 + ",monthlyIncome " + inputNode.get("monthlyIncome")
+                + ",creditScore " + inputNode.get("creditScore")
                 + "\0";
         exchange.getIn().setBody(outputString);
     }

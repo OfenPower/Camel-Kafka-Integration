@@ -1,10 +1,11 @@
 package loanbroker;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 
 public class ToJsonBankTranslator implements Processor {
 
@@ -22,7 +23,8 @@ public class ToJsonBankTranslator implements Processor {
     {
         "requestedFunds" : 123.4,
         "startCapital" : 123.4,
-        "monthlyIncome" : 123.4
+        "monthlyIncome" : 123.4,
+        "creditScore" : 5
     }
      */
     @Override
@@ -34,9 +36,10 @@ public class ToJsonBankTranslator implements Processor {
         JsonNode outputNode = mapper.createObjectNode();
         ObjectNode outObj = (ObjectNode)outputNode;
 
-        outObj.put("requestedFunds",inputNode.get("creditRequest").asDouble());
-        outObj.put("startCapital",inputNode.get("currentCapital").asDouble());
-        outObj.put("monthlyIncome",inputNode.get("monthlyIncome").asDouble());
+        outObj.put("requestedFunds", inputNode.get("creditRequest").asDouble());
+        outObj.put("startCapital", inputNode.get("currentCapital").asDouble());
+        outObj.put("monthlyIncome", inputNode.get("monthlyIncome").asDouble());
+        outObj.put("creditScore", inputNode.get("creditScore").asDouble());
 
         exchange.getIn().setBody(outputNode.toString());
     }
