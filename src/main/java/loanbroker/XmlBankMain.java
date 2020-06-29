@@ -55,27 +55,41 @@ class XmlBankProcessor implements Processor {
 		
 		XmlMapper xmlMapper = new XmlMapper();
 		CreditRequest xmlLoanRequest = xmlMapper.readValue(xmlString, CreditRequest.class);
-	   
+		
+		
 		System.out.println("XML BANK VALUES");
 		System.out.println(xmlLoanRequest.creditRequest);
 		System.out.println(xmlLoanRequest.currentCapital);
 		System.out.println(xmlLoanRequest.monthlyIncome);
 		System.out.println(xmlLoanRequest.creditScore);
+		System.out.println(xmlLoanRequest.monthlyPremiums);
+		System.out.println(xmlLoanRequest.durationInMonths);
+		System.out.println(xmlLoanRequest.grantedCredit);
+		System.out.println(xmlLoanRequest.interestRatePerMonth);
+		
+		
+		
 	}
 }
 
 // Klasse in die der Xml String deserialisiert wird
+/*
+<CreditRequest>
+	<creditRequest>23623.0</creditRequest>
+	<currentCapital>2.62346423E8</currentCapital>
+	<monthlyIncome>236234.0</monthlyIncome>
+	<creditScore>10</creditScore>
+</CreditRequest>
+*/
 class CreditRequest {
-//	<?xml version="1.0" encoding="UTF-8">
-//    <CreditRequest>
-//		<creditRequest>23623.0</creditRequest>
-//		<currentCapital>2.62346423E8</currentCapital>
-//		<monthlyIncome>236234.0</monthlyIncome>
-//		<creditScore>10</creditScore>
-//	</CreditRequest>
-	
 	public double creditRequest;
 	public double currentCapital;
 	public double monthlyIncome;
 	public int creditScore;
+	
+	public double monthlyPremiums;
+	public int durationInMonths;
+	public double grantedCredit;
+	public double interestRatePerMonth;
 }
+

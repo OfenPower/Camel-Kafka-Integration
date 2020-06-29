@@ -1,12 +1,12 @@
 package loanbroker;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonBankMain {
 
@@ -45,9 +45,9 @@ class JsonBankRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        String fromKafka = "kafka:bank01?brokers=localhost:9092&groupId=JsonBank";
+        String fromKafka = "kafka:bank01?brokers=localhost:9092&groupId=groupA";
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
-        from(fromKafka).process(new JsonBankProcessor()).to(toKafka);
+        from(fromKafka).process(new JsonBankProcessor()); //.to(toKafka);
     }
 }
 
