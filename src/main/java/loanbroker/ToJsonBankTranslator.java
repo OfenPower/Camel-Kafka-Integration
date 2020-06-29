@@ -34,13 +34,14 @@ public class ToJsonBankTranslator implements Processor {
 
         JsonNode inputNode = mapper.readTree(exchange.getIn().getBody(String.class));
         JsonNode outputNode = mapper.createObjectNode();
-        ObjectNode outObj = (ObjectNode)outputNode;
 
-        outObj.put("requestedFunds", inputNode.get("creditRequest").asDouble());
-        outObj.put("startCapital", inputNode.get("currentCapital").asDouble());
-        outObj.put("monthlyIncome", inputNode.get("monthlyIncome").asDouble());
-        outObj.put("creditScore", inputNode.get("creditScore").asDouble());
+        JsonBankMain.Request request = new JsonBankMain.Request();
 
-        exchange.getIn().setBody(outputNode.toString());
+        request.requestedFunds = inputNode.get("creditRequest").asDouble();
+        request.startCapital = inputNode.get("currentCapital").asDouble();
+        request.monthlyIncome = inputNode.get("monthlyIncome").asDouble();
+        request.creditScore = inputNode.get("creditScore").asInt();
+
+        exchange.getIn().setBody(mapper.writeValueAsString(request));
     }
 }
