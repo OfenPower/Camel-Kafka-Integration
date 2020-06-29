@@ -12,15 +12,17 @@ public class BankResponseAggregationStrategy implements AggregationStrategy {
 			return newExchange;
 		}
 
-		Double oldQuote = oldExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
-		Double newQuote = newExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
-
-		// return the winner with the lowest rate
-		if (oldQuote.doubleValue() <= newQuote.doubleValue()) {
-			return oldExchange;
-		} else {
-			return newExchange;
-		}
+//		Double oldQuote = oldExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
+//		Double newQuote = newExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
+//
+//		// return the winner with the lowest rate
+//		if (oldQuote.doubleValue() <= newQuote.doubleValue()) {
+//			return oldExchange;
+//		} else {
+//			return newExchange;
+//		}
+		
+		return null;
 	}
 
 }

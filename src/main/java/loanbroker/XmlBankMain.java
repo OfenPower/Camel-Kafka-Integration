@@ -45,28 +45,30 @@ class XmlBankRoute extends RouteBuilder {
 }
 
 class XmlBankProcessor implements Processor {
-
+	
+    static int creditDuration = 10*12; // 10 years
+    static double interestRate = 0.05; // 5%
+	
 	@Override
 	public void process(Exchange exchange) throws Exception {
-
+		
+		// XML Message holen und in Objekt parsen
 		String xmlString = exchange.getIn().getBody(String.class);
-		
-		System.out.println(xmlString);
-		
 		XmlMapper xmlMapper = new XmlMapper();
 		CreditRequest xmlLoanRequest = xmlMapper.readValue(xmlString, CreditRequest.class);
 		
+		// XML Response erzeugen und Response berechnen
+		CreditResponse xmlResponse = new CreditResponse();
+		xmlResponse.durationInMonths = creditDuration;
+		xmlResponse.grantedCredit = xmlLoanRequest.creditRequest;
+		xmlResponse.interestRatePerMonth = interestRate;
+		xmlResponse.monthlyPremiums = xmlLoanRequest.creditRequest / xmlResponse.durationInMonths;
+		xmlResponse.monthlyPremiums += xmlResponse.monthlyPremiums * xmlResponse.interestRatePerMonth;
 		
-		System.out.println("XML BANK VALUES");
-		System.out.println(xmlLoanRequest.creditRequest);
-		System.out.println(xmlLoanRequest.currentCapital);
-		System.out.println(xmlLoanRequest.monthlyIncome);
-		System.out.println(xmlLoanRequest.creditScore);
-		System.out.println(xmlLoanRequest.monthlyPremiums);
-		System.out.println(xmlLoanRequest.durationInMonths);
-		System.out.println(xmlLoanRequest.grantedCredit);
-		System.out.println(xmlLoanRequest.interestRatePerMonth);
-		
+		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
+		String xmlResponseString = xmlMapper.writeValueAsString(new CreditResponse());
+		exchange.getIn().setBody(xmlResponseString);
+		exchange.getIn().setHeader("type", "xml");
 		
 		
 	}
@@ -87,6 +89,10 @@ class CreditRequest {
 	public double monthlyIncome;
 	public int creditScore;
 	
+}
+
+// Antwort Xml Klasse
+class CreditResponse {
 	public double monthlyPremiums;
 	public int durationInMonths;
 	public double grantedCredit;
