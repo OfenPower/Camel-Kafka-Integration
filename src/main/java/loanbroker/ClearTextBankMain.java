@@ -43,8 +43,8 @@ class ClearTextBank implements Processor
 {
     // requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5
 
-    static int creditDuration = 15*12;
-    static double interestRate = 0.15;
+    static int creditDuration = 10*12;
+    static double interestRate = 0.02;
 
     @Override
     public void process(Exchange exchange) throws Exception {
