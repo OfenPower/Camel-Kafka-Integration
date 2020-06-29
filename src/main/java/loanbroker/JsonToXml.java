@@ -12,7 +12,7 @@ public class JsonToXml {
     {
         ObjectMapper mapper = new ObjectMapper();
         StringBuilder xml = new StringBuilder();
-        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\">\n");
+        //xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\">\n");
         xml.append("<CreditRequest>\n");
         try {
             JsonNode node = mapper.readTree(json);

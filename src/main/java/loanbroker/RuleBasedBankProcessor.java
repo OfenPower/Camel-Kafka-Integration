@@ -39,7 +39,7 @@ public class RuleBasedBankProcessor implements Processor{
 			arrayNode.add("bank03");
 		}
 		
-		System.out.println(node.toPrettyString());
+		//System.out.println(node.toPrettyString());
 		
 		// json mit Bankenliste rausschicken
 		exchange.getIn().setBody(node.toString());

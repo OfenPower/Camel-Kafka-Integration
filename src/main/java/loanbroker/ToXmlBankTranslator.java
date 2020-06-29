@@ -20,7 +20,7 @@ public class ToXmlBankTranslator implements Processor {
 	}
     to the format required by the Xml Bank:
     
-    <?xml version="1.0" encoding="UTF-8">
+    <?xml version="1.0" encoding="UTF-8?">
     <CreditRequest>
 		<creditRequest>23623.0</creditRequest>
 		<currentCapital>2.62346423E8</currentCapital>
@@ -39,9 +39,12 @@ public class ToXmlBankTranslator implements Processor {
         JsonNode inputNode = mapper.readTree(jsonString);
         ObjectNode inputObject = (ObjectNode) inputNode;
         inputObject.remove("bankList");
-		
+        
+        // Json zu Xml konvertieren
+        String xmlString = JsonToXml.jsonToXml(inputObject.toString());
+        
 		// XML Message rausschicken
-		exchange.getIn().setBody(JsonToXml.jsonToXml(inputObject.toString()));
+		exchange.getIn().setBody(xmlString);
 		
 	}
 
