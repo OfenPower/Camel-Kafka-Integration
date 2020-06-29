@@ -38,8 +38,8 @@ class XmlBankRoute extends RouteBuilder {
 		
 		// übersetzte Message aus Kafka lesen und verarbeiten
 		from("kafka:bank02?brokers=localhost:9092&groupId=groupA")
-			.process(new XmlBankProcessor());
-		//.to("kafka:loan-response?brokers=localhost:9092");
+			.process(new XmlBankProcessor())
+		.to("kafka:loan-response?brokers=localhost:9092");
 	}
 	
 }
@@ -67,6 +67,7 @@ class XmlBankProcessor implements Processor {
 		
 		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
 		String xmlResponseString = xmlMapper.writeValueAsString(new CreditResponse());
+		System.out.println("Send Response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
 		

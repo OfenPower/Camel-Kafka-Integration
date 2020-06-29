@@ -5,7 +5,6 @@ import org.apache.camel.Processor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ToJsonBankTranslator implements Processor {
 
@@ -33,7 +32,7 @@ public class ToJsonBankTranslator implements Processor {
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode inputNode = mapper.readTree(exchange.getIn().getBody(String.class));
-        JsonNode outputNode = mapper.createObjectNode();
+        //JsonNode outputNode = mapper.createObjectNode();
 
         JsonBankMain.Request request = new JsonBankMain.Request();
 

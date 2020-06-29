@@ -47,7 +47,7 @@ class JsonBankRoute extends RouteBuilder {
     public void configure() throws Exception {
         String fromKafka = "kafka:bank01?brokers=localhost:9092&groupId=groupA";
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
-        from(fromKafka).process(new JsonBankProcessor()); //.to(toKafka);
+        from(fromKafka).process(new JsonBankProcessor()).to(toKafka);
     }
 }
 

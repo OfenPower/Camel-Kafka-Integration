@@ -1,12 +1,12 @@
 package loanbroker;
 
+import java.io.IOException;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
-
-import java.io.IOException;
 
 public class ClearTextBankMain {
 
@@ -35,11 +35,11 @@ class ClearTextBankRoute extends RouteBuilder
     public void configure() throws Exception {
         String fromKafka = "kafka:bank03?brokers=localhost:9092&groupId=groupA";
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
-        from(fromKafka).process(new JsonBankProcessor()); //.to(toKafka);
+        from(fromKafka).process(new ClearTextBankProcessor()).to(toKafka);
     }
 }
 
-class ClearTextBank implements Processor
+class ClearTextBankProcessor implements Processor
 {
     // requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5
 
@@ -54,9 +54,9 @@ class ClearTextBank implements Processor
         System.out.println("Received the following message: " + msg);
 
         double requestedFunds = Double.parseDouble(fields[0].split(" ")[1]);
-        double startCapital = Double.parseDouble(fields[1].split(" ")[1]);
-        double monthlyIncome = Double.parseDouble(fields[2].split(" ")[1]);
-        int creditScore = Integer.parseInt(fields[3].split(" ")[1]);
+        //double startCapital = Double.parseDouble(fields[1].split(" ")[1]);
+        //double monthlyIncome = Double.parseDouble(fields[2].split(" ")[1]);
+        //int creditScore = Integer.parseInt(fields[3].split(" ")[1]);
 
         double monthlyPremiums = requestedFunds / creditDuration;
         monthlyPremiums += monthlyPremiums * interestRate;
