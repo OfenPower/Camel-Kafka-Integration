@@ -61,6 +61,7 @@ class ClearTextBank implements Processor
         double monthlyPremiums = requestedFunds / creditDuration;
         monthlyPremiums += monthlyPremiums * interestRate;
 
+        exchange.getIn().setHeader("type","clearText");
         exchange.getIn().setBody("monthlyPremiums " + monthlyPremiums
                 + ", durationInMonths " + creditDuration
                 + ", grantedCredit " + requestedFunds

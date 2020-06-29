@@ -95,5 +95,6 @@ class JsonBankProcessor implements Processor{
 
         System.out.println("Send the following response: " + responseJson);
         exchange.getIn().setBody(responseJson);
+        exchange.getIn().setHeader("type","json");
     }
 }
