@@ -46,9 +46,11 @@ public class LoanBrokerRoute extends RouteBuilder {
 				
 		// Each bank processor will process the message and put the response message
 		// back
-		from("direct:bank01").process(new ToJsonBankTranslator()).process(new PrintMessageProcessor());
-		from("direct:bank02").process(new ToXmlBankTranslator()).process(new PrintMessageProcessor());
-		from("direct:bank03").process(new ToClearTextBankTranslator()).process(new PrintMessageProcessor());
+		from("direct:bank01").process(new ToJsonBankTranslator()).to("kafka:bank01?brokers=localhost:9092");
+		from("direct:bank02").process(new ToXmlBankTranslator()).to("kafka:bank02?brokers=localhost:9092");
+		from("direct:bank03").process(new ToClearTextBankTranslator()).to("kafka:bank03?brokers=localhost:9092");
+		
+		//process(new PrintMessageProcessor());
 		
 		//from("kafka:bank-response?brokers=localhost:9092&groupId=groupA&")
 			//.process(new Normalizer())
