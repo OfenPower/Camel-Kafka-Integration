@@ -8,7 +8,28 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import bank.XmlBankMain.CreditRequest;
+import bank.XmlBankMain.CreditResponse;
+
 public class XmlBankMain {
+	
+	// Request Xml Klasse
+	public static class CreditRequest {
+		public double creditRequest;
+		public double currentCapital;
+		public double monthlyIncome;
+		public int creditScore;
+		
+	}
+
+	// Antwort Xml Klasse
+	public static class CreditResponse {
+		public double monthlyPremiums;
+		public int durationInMonths;
+		public double grantedCredit;
+		public double interestRatePerMonth;
+	}
+
 
 	public static void main(String[] args) {
 		
@@ -85,19 +106,4 @@ class XmlBankProcessor implements Processor {
 	<creditScore>10</creditScore>
 </CreditRequest>
 */
-class CreditRequest {
-	public double creditRequest;
-	public double currentCapital;
-	public double monthlyIncome;
-	public int creditScore;
-	
-}
-
-// Antwort Xml Klasse
-class CreditResponse {
-	public double monthlyPremiums;
-	public int durationInMonths;
-	public double grantedCredit;
-	public double interestRatePerMonth;
-}
 
