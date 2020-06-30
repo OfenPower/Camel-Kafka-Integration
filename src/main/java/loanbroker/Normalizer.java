@@ -19,17 +19,17 @@ public class Normalizer {
 		String msg = exchange.getIn().getBody(String.class);
 		String fields[] = msg.split(",");
 
-		double requestedFunds = Double.parseDouble(fields[0].split(" ")[1]);
-		double startCapital = Double.parseDouble(fields[1].split(" ")[1]);
-		double monthlyIncome = Double.parseDouble(fields[2].split(" ")[1]);
-		int creditScore = Integer.parseInt(fields[3].split(" ")[1]);
+		double monthlyPremiums = Double.parseDouble(fields[0].split(" ")[1]);
+		int durationInMonths = Integer.parseInt(fields[1].split(" ")[1]);
+		double grantedCredit = Double.parseDouble(fields[2].split(" ")[1]);
+		double interestRatePerMonth = Double.parseDouble(fields[3].split(" ")[1]);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
-		node.put("requestedFunds",requestedFunds);
-		node.put("startCapital", startCapital);
-		node.put("monthlyIncome",monthlyIncome);
-		node.put("creditScore",creditScore);
+		node.put("monthlyPremiums",monthlyPremiums);
+		node.put("durationInMonths", durationInMonths);
+		node.put("grantedCredit",grantedCredit);
+		node.put("interestRatePerMonth",interestRatePerMonth);
 		exchange.getIn().setBody(node.toString());
 		System.out.println("Normalized ClearTextResponse to: " + node.toString());
 	}
