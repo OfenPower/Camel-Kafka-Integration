@@ -1,4 +1,4 @@
-package loanbroker;
+package bank;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -23,6 +23,7 @@ public class XmlBankMain {
 			System.in.read();
 			System.out.println("Program End");
 			ctx.stop();
+			ctx.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,7 +38,7 @@ class XmlBankRoute extends RouteBuilder {
 	public void configure() throws Exception {
 		
 		// übersetzte Message aus Kafka lesen und verarbeiten
-		from("kafka:bank02?brokers=localhost:9092&groupId=groupA")
+		from("kafka:bank02?brokers=localhost:9092&groupId=xmlBank")
 			.process(new XmlBankProcessor())
 		.to("kafka:loan-response?brokers=localhost:9092");
 	}

@@ -1,11 +1,10 @@
 package loanbroker;
 
+import org.apache.camel.AggregationStrategy;
 import org.apache.camel.Exchange;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
 
 public class BankResponseAggregationStrategy implements AggregationStrategy {
 
-	@Override
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 		// the first time we only have the new exchange
 		if (oldExchange == null) {

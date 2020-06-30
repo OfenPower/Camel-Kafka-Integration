@@ -1,5 +1,5 @@
 
-package loanbroker;
+package client;
 
 import java.awt.GridLayout;
 
@@ -12,6 +12,8 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
+
+import loanbroker.LoanRequestMessage;
 
 public class ClientMain {
 
@@ -84,6 +86,7 @@ public class ClientMain {
 			// Producer und CamelContext schlieﬂen
 			producerTemplate.stop();
 			ctx.stop();
+			ctx.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();

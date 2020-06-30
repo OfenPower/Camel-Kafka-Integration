@@ -6,6 +6,8 @@ import org.apache.camel.Processor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import bank.JsonBankMain;
+
 public class ToJsonBankTranslator implements Processor {
 
 

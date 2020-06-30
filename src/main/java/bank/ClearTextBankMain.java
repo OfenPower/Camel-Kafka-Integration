@@ -1,4 +1,4 @@
-package loanbroker;
+package bank;
 
 import java.io.IOException;
 
@@ -20,6 +20,7 @@ public class ClearTextBankMain {
             System.in.read();
             System.out.println("Program End");
             ctx.stop();
+            ctx.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -33,7 +34,7 @@ class ClearTextBankRoute extends RouteBuilder
 {
     @Override
     public void configure() throws Exception {
-        String fromKafka = "kafka:bank03?brokers=localhost:9092&groupId=groupA";
+        String fromKafka = "kafka:bank03?brokers=localhost:9092&groupId=clearTextBank";
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
         from(fromKafka).process(new ClearTextBankProcessor()).to(toKafka);
     }
