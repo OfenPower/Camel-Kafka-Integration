@@ -104,6 +104,7 @@ public class ClientMain {
 			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);
 			
+			System.in.read();
 			//Thread.sleep(2000);
 
 			// Producer und CamelContext schlieﬂen
