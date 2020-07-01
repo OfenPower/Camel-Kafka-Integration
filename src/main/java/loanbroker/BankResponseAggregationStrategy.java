@@ -2,11 +2,12 @@ package loanbroker;
 
 import org.apache.camel.AggregationStrategy;
 import org.apache.camel.Exchange;
+import org.apache.camel.Predicate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class BankResponseAggregationStrategy implements AggregationStrategy {
+public class BankResponseAggregationStrategy implements AggregationStrategy, Predicate {
 
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 		
@@ -36,6 +37,13 @@ public class BankResponseAggregationStrategy implements AggregationStrategy {
 //		}
 //		
 //		return newExchange;
+	}
+
+	@Override
+	public boolean matches(Exchange exchange) {
+		System.out.println("Predicate matches()");
+		System.out.println(exchange.getIn().getBody(String.class));
+		return true;
 	}
 
 	

@@ -80,8 +80,8 @@ public class ClientMain {
 			ProducerTemplate producerTemplate = ctx.createProducerTemplate();
 			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);
-
-			System.in.read();
+			
+			Thread.sleep(2000);
 
 			// Producer und CamelContext schlieﬂen
 			producerTemplate.stop();

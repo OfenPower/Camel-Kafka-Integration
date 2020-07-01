@@ -93,7 +93,7 @@ class XmlBankProcessor implements Processor {
 		xmlResponse.correlationId = xmlLoanRequest.correlationId;
 		
 		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
-		String xmlResponseString = xmlMapper.writeValueAsString(new CreditResponse());
+		String xmlResponseString = xmlMapper.writeValueAsString(xmlResponse);
 		System.out.println("Send the following response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
