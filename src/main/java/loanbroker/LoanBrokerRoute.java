@@ -44,29 +44,6 @@ public class LoanBrokerRoute extends RouteBuilder {
 					.bean(DynamicRouterBean.class,"route")
 				.end();
 				
-		// Each bank processor will process the message and put the response message
-		// back
-//		from("direct:bank01").process(new ToJsonBankTranslator()).to("kafka:bank01?brokers=localhost:9092");
-//		from("direct:bank02").process(new ToXmlBankTranslator()).to("kafka:bank02?brokers=localhost:9092");
-//		from("direct:bank03").process(new ToClearTextBankTranslator()).to("kafka:bank03?brokers=localhost:9092");
-		
-		
-//		
-//		from("kafka:loan-response?brokers=localhost:9092&groupId=groupA")
-//			.choice()
-//				.when(simple("${header.type}==json")).bean(Normalizer.class, "normalizeJson")
-//				.when(simple("${header.type}==xml")).bean(Normalizer.class, "normalizeXml")
-//				.when(simple("${header.type}==clearText")).bean(Normalizer.class, "normalizeClearText")
-//			.end();
-		
-		
-		
-		//process(new PrintMessageProcessor());
-		
-		//from("kafka:bank-response?brokers=localhost:9092&groupId=groupA&")
-			//.process(new Normalizer())
-			//.aggregate(new BankResponseAggregationStrategy())
-		//.to("kafka:client-response?brokers=localhost:9092&groupId=groupA&");
 	}
 
 }

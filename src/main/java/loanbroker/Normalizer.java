@@ -1,9 +1,5 @@
 package loanbroker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.camel.Exchange;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +11,8 @@ import bank.XmlBankMain.CreditResponse;
 
 public class Normalizer {
 	public void normalizeJson(Exchange exchange) {
+		// do nothing, because .json File is alright
+		System.out.println("Normalized JsonResponse to: " + exchange.getIn().getBody(String.class));
 	}
 	
 	public void normalizeXml(Exchange exchange) {
@@ -28,7 +26,6 @@ public class Normalizer {
 		try {
 			xmlLoanResponse = xmlMapper.readValue(xmlString, CreditResponse.class);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
@@ -43,6 +40,8 @@ public class Normalizer {
         
         // normalisierte json Datei weiterleiten
         exchange.getIn().setBody(node.toString());
+        
+        System.out.println("Normalized XmlResponse to: " + node.toString());
 		
 	}
 	
@@ -63,6 +62,7 @@ public class Normalizer {
 		node.put("grantedCredit",grantedCredit);
 		node.put("interestRatePerMonth",interestRatePerMonth);
 		exchange.getIn().setBody(node.toString());
+		
 		System.out.println("Normalized ClearTextResponse to: " + node.toString());
 	}
 }

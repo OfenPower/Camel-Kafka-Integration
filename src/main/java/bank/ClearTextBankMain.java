@@ -63,10 +63,12 @@ class ClearTextBankProcessor implements Processor
         monthlyPremiums += monthlyPremiums * interestRate;
 
         exchange.getIn().setHeader("type","clearText");
+        exchange.getIn().setHeader("corrId", 5);
         exchange.getIn().setBody("monthlyPremiums " + monthlyPremiums
-                + ", durationInMonths " + creditDuration
-                + ", grantedCredit " + requestedFunds
-                + ", interestRatePerMonth" + interestRate);
+                + ",durationInMonths " + creditDuration
+                + ",grantedCredit " + requestedFunds
+                + ",interestRatePerMonth " + interestRate);
+        
         System.out.println("Send the following response: " + exchange.getIn().getBody(String.class));
     }
 }

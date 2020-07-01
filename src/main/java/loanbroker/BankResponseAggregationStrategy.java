@@ -6,10 +6,15 @@ import org.apache.camel.Exchange;
 public class BankResponseAggregationStrategy implements AggregationStrategy {
 
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
+		
+		System.out.println(newExchange.getIn().getBody(String.class));
+		
 		// the first time we only have the new exchange
 		if (oldExchange == null) {
 			return newExchange;
 		}
+		
+		
 
 //		Double oldQuote = oldExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
 //		Double newQuote = newExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
@@ -21,7 +26,12 @@ public class BankResponseAggregationStrategy implements AggregationStrategy {
 //			return newExchange;
 //		}
 		
-		return null;
+		
+		
+		
+		return newExchange;
 	}
+
+	
 
 }

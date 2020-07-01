@@ -92,6 +92,8 @@ class XmlBankProcessor implements Processor {
 		System.out.println("Send Response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
+		exchange.getIn().setHeader("corrId", 5);
+		
 		
 		
 	}

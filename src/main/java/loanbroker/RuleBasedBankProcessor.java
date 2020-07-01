@@ -8,8 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class RuleBasedBankProcessor implements Processor{
+public class RuleBasedBankProcessor implements Processor {
 
+	private static int correlationId = 0;
+	
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		
@@ -43,6 +45,7 @@ public class RuleBasedBankProcessor implements Processor{
 		
 		// json mit Bankenliste rausschicken
 		exchange.getIn().setBody(node.toString());
+		exchange.getIn().setHeader(Exchange.CORRELATION_ID, correlationId++);
 		
 		
 		
