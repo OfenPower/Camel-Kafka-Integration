@@ -37,6 +37,7 @@ public class Normalizer {
         obj.put("durationInMonths",xmlLoanResponse.durationInMonths);
         obj.put("grantedCredit",xmlLoanResponse.grantedCredit);
         obj.put("interestRatePerMonth",xmlLoanResponse.interestRatePerMonth);
+        obj.put("correlationId",xmlLoanResponse.correlationId);
         
         // normalisierte json Datei weiterleiten
         exchange.getIn().setBody(node.toString());

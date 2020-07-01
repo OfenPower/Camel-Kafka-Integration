@@ -3,33 +3,39 @@ package loanbroker;
 import org.apache.camel.AggregationStrategy;
 import org.apache.camel.Exchange;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class BankResponseAggregationStrategy implements AggregationStrategy {
 
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 		
-		System.out.println(newExchange.getIn().getBody(String.class));
 		
-		// the first time we only have the new exchange
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode obj = mapper.createObjectNode();
 		if (oldExchange == null) {
+			obj.put("count", 1);
+			newExchange.getIn().setBody(obj.toString());
 			return newExchange;
+		} else {
+			try {
+				int count = mapper.readTree(oldExchange.getIn().getBody(String.class)).get("count").asInt();
+				obj.put("count", ++count);
+				newExchange.getIn().setBody(obj.toString());
+				return newExchange;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 		}
+		return null;
 		
 		
-
-//		Double oldQuote = oldExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
-//		Double newQuote = newExchange.getIn().getHeader(Constants.PROPERTY_RATE, Double.class);
-//
-//		// return the winner with the lowest rate
-//		if (oldQuote.doubleValue() <= newQuote.doubleValue()) {
-//			return oldExchange;
-//		} else {
+//		// the first time we only have the new exchange
+//		if (oldExchange == null) {
 //			return newExchange;
 //		}
-		
-		
-		
-		
-		return newExchange;
+//		
+//		return newExchange;
 	}
 
 	

@@ -9,6 +9,9 @@ public class CorrelationIdPrintProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		System.out.println("CorrelationIdPrintProcessor:");
 		System.out.println(exchange.getIn().getBody(String.class));
+		
+		
+		
 		//System.out.println(exchange.getIn().getHeader(Exchange.CORRELATION_ID));
 		
 //		// Correlation Id zurück zum int konvertieren

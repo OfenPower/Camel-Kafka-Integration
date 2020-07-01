@@ -78,6 +78,8 @@ class XmlBankProcessor implements Processor {
 		
 		// XML Message holen und in Objekt parsen
 		String xmlString = exchange.getIn().getBody(String.class);
+		System.out.println("Received the following message: " + xmlString);
+		
 		XmlMapper xmlMapper = new XmlMapper();
 		CreditRequest xmlLoanRequest = xmlMapper.readValue(xmlString, CreditRequest.class);
 		
@@ -92,7 +94,7 @@ class XmlBankProcessor implements Processor {
 		
 		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
 		String xmlResponseString = xmlMapper.writeValueAsString(new CreditResponse());
-		System.out.println("Send Response: " + xmlResponseString);
+		System.out.println("Send the following response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
 	}

@@ -1,8 +1,5 @@
 package bank;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

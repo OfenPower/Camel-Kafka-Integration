@@ -14,9 +14,9 @@ public class BrokerLoanResponseRoute extends RouteBuilder {
 			.when(simple("${header.type} == 'xml'")).bean(Normalizer.class, "normalizeXml")
 			.when(simple("${header.type} == 'clearText'")).bean(Normalizer.class, "normalizeClearText")
 		.end()
-		.process(new CorrelationIdPrintProcessor())
+		//.process(new CorrelationIdPrintProcessor())
 		// Step 2: Aggregate, sodass aus allen Angeboten das Beste für den Kunden zurückgeliefert wird
-		.aggregate(new CorrelationExpression(), new BankResponseAggregationStrategy()).completionTimeout(5000)
+		.aggregate(new CorrelationExpression(), new BankResponseAggregationStrategy()).completionTimeout(10000)
 		.process(new PrintMessageProcessor());
 		//.to("kafka:broker-response?brokers=localhost:9092");
 	
