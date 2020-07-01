@@ -102,7 +102,7 @@ class JsonBankProcessor implements Processor{
         exchange.getIn().setHeader("type","json");
 
         // Correlation Key fürs Aggregate
-     	int corrId = 5;
+     	int corrId = 0;
      	ByteArrayOutputStream bos = new ByteArrayOutputStream();
      	DataOutputStream dos = new DataOutputStream(bos);
      	dos.writeInt(corrId);

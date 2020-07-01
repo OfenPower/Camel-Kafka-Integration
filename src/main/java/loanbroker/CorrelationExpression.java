@@ -9,8 +9,8 @@ public class CorrelationExpression implements Expression {
 	@Override
 	public <T> T evaluate(Exchange exchange, Class<T> type) {
 		
-		System.out.println("CorrelationExpression:");
-		System.out.println(exchange.getIn().getBody(String.class));
+		//System.out.println("CorrelationExpression:");
+		//System.out.println(exchange.getIn().getBody(String.class));
 		
 		return (T) new String("Test");
 	}

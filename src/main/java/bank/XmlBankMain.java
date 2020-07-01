@@ -97,7 +97,7 @@ class XmlBankProcessor implements Processor {
 		exchange.getIn().setHeader("type", "xml");
 		
 		// Correlation Key fürs Aggregate
-		int corrId = 5;
+		int corrId = 0;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	    DataOutputStream dos = new DataOutputStream(bos);
 	    dos.writeInt(corrId);
