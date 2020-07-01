@@ -29,7 +29,8 @@ public class ToClearTextBankTranslator implements Processor {
         String outputString = "requestedFunds " + inputNode.get("creditRequest")
                 + ",startCapital " + inputNode.get("currentCapital")
                 + ",monthlyIncome " + inputNode.get("monthlyIncome")
-                + ",creditScore " + inputNode.get("creditScore");
+                + ",creditScore " + inputNode.get("creditScore")
+                + ",correlationId " + inputNode.get("correlationId");
         exchange.getIn().setBody(outputString);
     }
 }

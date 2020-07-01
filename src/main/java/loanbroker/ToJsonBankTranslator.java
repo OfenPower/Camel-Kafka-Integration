@@ -42,6 +42,7 @@ public class ToJsonBankTranslator implements Processor {
         request.startCapital = inputNode.get("currentCapital").asDouble();
         request.monthlyIncome = inputNode.get("monthlyIncome").asDouble();
         request.creditScore = inputNode.get("creditScore").asInt();
+        request.correlationId = inputNode.get("correlationId").asInt();
 
         exchange.getIn().setBody(mapper.writeValueAsString(request));
     }

@@ -60,6 +60,7 @@ class ClearTextBankProcessor implements Processor
         //double startCapital = Double.parseDouble(fields[1].split(" ")[1]);
         //double monthlyIncome = Double.parseDouble(fields[2].split(" ")[1]);
         //int creditScore = Integer.parseInt(fields[3].split(" ")[1]);
+        int correlationId = Integer.parseInt(fields[4].split(" ")[1]);
 
         double monthlyPremiums = requestedFunds / creditDuration;
         monthlyPremiums += monthlyPremiums * interestRate;
@@ -68,9 +69,10 @@ class ClearTextBankProcessor implements Processor
         exchange.getIn().setBody("monthlyPremiums " + monthlyPremiums
                 + ",durationInMonths " + creditDuration
                 + ",grantedCredit " + requestedFunds
-                + ",interestRatePerMonth " + interestRate);
+                + ",interestRatePerMonth " + interestRate
+                + ",correlationId " + correlationId);
         
-        // Correlation Key fürs Aggregate
+        // Correlation Key fï¿½rs Aggregate
      	int corrId = 0;
      	ByteArrayOutputStream bos = new ByteArrayOutputStream();
      	DataOutputStream dos = new DataOutputStream(bos);

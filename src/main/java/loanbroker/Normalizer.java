@@ -54,6 +54,7 @@ public class Normalizer {
 		int durationInMonths = Integer.parseInt(fields[1].split(" ")[1]);
 		double grantedCredit = Double.parseDouble(fields[2].split(" ")[1]);
 		double interestRatePerMonth = Double.parseDouble(fields[3].split(" ")[1]);
+		int correlationId = Integer.parseInt(fields[4].split(" ")[1]);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
@@ -61,6 +62,7 @@ public class Normalizer {
 		node.put("durationInMonths", durationInMonths);
 		node.put("grantedCredit",grantedCredit);
 		node.put("interestRatePerMonth",interestRatePerMonth);
+		node.put("correlationId", correlationId);
 		exchange.getIn().setBody(node.toString());
 		
 		System.out.println("Normalized ClearTextResponse to: " + node.toString());

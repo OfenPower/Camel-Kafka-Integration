@@ -18,6 +18,7 @@ public class JsonBankMain {
         public double startCapital;
         public double monthlyIncome;
         public int creditScore;
+        public int correlationId;
     }
 
     public static class Response{
@@ -25,6 +26,7 @@ public class JsonBankMain {
         public int durationInMonths;
         public double grantedCredit;
         public double interestRatePerMonth;
+        public int correlationId;
     }
 
     public static void main(String[] args) {
@@ -101,7 +103,7 @@ class JsonBankProcessor implements Processor{
         exchange.getIn().setBody(responseJson);
         exchange.getIn().setHeader("type","json");
 
-        // Correlation Key fürs Aggregate
+        // Correlation Key fï¿½rs Aggregate
      	int corrId = 0;
      	ByteArrayOutputStream bos = new ByteArrayOutputStream();
      	DataOutputStream dos = new DataOutputStream(bos);
