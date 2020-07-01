@@ -96,6 +96,7 @@ class JsonBankProcessor implements Processor{
         response.interestRatePerMonth = interestRate;
         response.monthlyPremiums = request.requestedFunds / response.durationInMonths;
         response.monthlyPremiums += response.monthlyPremiums * response.interestRatePerMonth;
+        response.correlationId = request.correlationId;
 
         String responseJson = mapper.writeValueAsString(response);
 
