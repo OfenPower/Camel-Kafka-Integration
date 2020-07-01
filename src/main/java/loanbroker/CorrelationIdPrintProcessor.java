@@ -6,16 +6,16 @@ import java.nio.ByteBuffer;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.component.kafka.KafkaConstants;
 
 public class CorrelationIdPrintProcessor implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		System.out.println("Print Correlation:");
+		System.out.println("CorrelationIdPrintProcessor:");
 		//System.out.println(exchange.getIn().getMessageId());
 		//System.out.println(exchange.getIn().getHeader(Exchange.CORRELATION_ID));
 		
+		// Correlation Id zurück zum int konvertieren
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		ObjectOutputStream os = new ObjectOutputStream(bs);
 		os.writeObject(exchange.getIn().getHeader("corrId"));
@@ -25,8 +25,8 @@ public class CorrelationIdPrintProcessor implements Processor {
 		int value = bb.getInt();
 		
 		System.out.println(value);
-		System.out.println(exchange.getIn().getHeader(KafkaConstants.KEY));
-		
+
+		//System.out.println(exchange.getIn().getHeader(KafkaConstants.KEY));
 		//System.out.println(exchange.getIn().getHeader("corrId"));
 		//System.out.println(exchange.getIn().getHeader("type"));
 		

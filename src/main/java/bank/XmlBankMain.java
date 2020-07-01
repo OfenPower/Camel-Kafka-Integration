@@ -1,5 +1,8 @@
 package bank;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -92,7 +95,15 @@ class XmlBankProcessor implements Processor {
 		System.out.println("Send Response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
-		exchange.getIn().setHeader("corrId", 5);
+		
+		// Correlation Key fürs Aggregate
+		int corrId = 5;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    DataOutputStream dos = new DataOutputStream(bos);
+	    dos.writeInt(corrId);
+	    dos.flush();
+	    byte[] bytes = bos.toByteArray();
+	    exchange.getIn().setHeader("corrId", bytes);
 		
 		
 		

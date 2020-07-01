@@ -14,6 +14,7 @@ public class LoanBrokerMain {
 		BrokerLoanResponseRoute brokerLoanResponseRoute = new BrokerLoanResponseRoute();
 		
 		CamelContext ctx = new DefaultCamelContext();
+		ctx.setTracing(true);
 		try {
 			ctx.addRoutes(loanBrokerRoute);
 			ctx.addRoutes(brokerBankRoute);

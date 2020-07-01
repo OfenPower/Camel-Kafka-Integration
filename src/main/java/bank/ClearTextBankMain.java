@@ -1,5 +1,7 @@
 package bank;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.camel.CamelContext;
@@ -63,11 +65,19 @@ class ClearTextBankProcessor implements Processor
         monthlyPremiums += monthlyPremiums * interestRate;
 
         exchange.getIn().setHeader("type","clearText");
-        exchange.getIn().setHeader("corrId", 5);
         exchange.getIn().setBody("monthlyPremiums " + monthlyPremiums
                 + ",durationInMonths " + creditDuration
                 + ",grantedCredit " + requestedFunds
                 + ",interestRatePerMonth " + interestRate);
+        
+        // Correlation Key fürs Aggregate
+     	int corrId = 5;
+     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+     	DataOutputStream dos = new DataOutputStream(bos);
+     	dos.writeInt(corrId);
+     	dos.flush();
+     	byte[] bytes = bos.toByteArray();
+     	exchange.getIn().setHeader("corrId", bytes);
         
         System.out.println("Send the following response: " + exchange.getIn().getBody(String.class));
     }
