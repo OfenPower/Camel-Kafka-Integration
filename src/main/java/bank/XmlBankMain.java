@@ -1,8 +1,5 @@
 package bank;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -22,6 +19,7 @@ public class XmlBankMain {
 		public double currentCapital;
 		public double monthlyIncome;
 		public int creditScore;
+		public int correlationId;
 		
 	}
 
@@ -31,6 +29,7 @@ public class XmlBankMain {
 		public int durationInMonths;
 		public double grantedCredit;
 		public double interestRatePerMonth;
+		public int correlationId;
 	}
 
 
@@ -89,34 +88,15 @@ class XmlBankProcessor implements Processor {
 		xmlResponse.interestRatePerMonth = interestRate;
 		xmlResponse.monthlyPremiums = xmlLoanRequest.creditRequest / xmlResponse.durationInMonths;
 		xmlResponse.monthlyPremiums += xmlResponse.monthlyPremiums * xmlResponse.interestRatePerMonth;
+		xmlResponse.correlationId = xmlLoanRequest.correlationId;
 		
 		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
 		String xmlResponseString = xmlMapper.writeValueAsString(new CreditResponse());
 		System.out.println("Send Response: " + xmlResponseString);
 		exchange.getIn().setBody(xmlResponseString);
 		exchange.getIn().setHeader("type", "xml");
-		
-		// Correlation Key fürs Aggregate
-		int corrId = 0;
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	    DataOutputStream dos = new DataOutputStream(bos);
-	    dos.writeInt(corrId);
-	    dos.flush();
-	    byte[] bytes = bos.toByteArray();
-	    exchange.getIn().setHeader("corrId", bytes);
-		
-		
-		
 	}
 }
 
-// Klasse in die der Xml String deserialisiert wird
-/*
-<CreditRequest>
-	<creditRequest>23623.0</creditRequest>
-	<currentCapital>2.62346423E8</currentCapital>
-	<monthlyIncome>236234.0</monthlyIncome>
-	<creditScore>10</creditScore>
-</CreditRequest>
-*/
+
 

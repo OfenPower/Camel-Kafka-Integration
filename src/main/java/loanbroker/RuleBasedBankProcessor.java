@@ -41,11 +41,13 @@ public class RuleBasedBankProcessor implements Processor {
 			arrayNode.add("bank03");
 		}
 		
-		//System.out.println(node.toPrettyString());
+		// Correlation Id fürs spätere Aggregate in den Body hinzufügen
+		obj.put("correlationId", correlationId++);
+		
+		System.out.println(node.toPrettyString());
 		
 		// json mit Bankenliste rausschicken
 		exchange.getIn().setBody(node.toString());
-		exchange.getIn().setHeader(Exchange.CORRELATION_ID, correlationId++);
 		
 		
 		
