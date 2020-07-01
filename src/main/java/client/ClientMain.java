@@ -26,6 +26,8 @@ public class ClientMain {
 		JTextField text1 = new JTextField();
 		JTextField text2 = new JTextField();
 		JTextField text3 = new JTextField();
+		JTextField text4 = new JTextField("Received Offer:");
+		JTextField text5 = new JTextField("Received Offer:");
 		JButton button = new JButton("Send Request");
 
 		button.addActionListener(e -> {
@@ -42,6 +44,8 @@ public class ClientMain {
 		frame.add(label3);
 		frame.add(text3);
 		frame.add(button);
+		frame.add(text4);
+		frame.add(text5);
 
 		frame.setLayout(new GridLayout(7, 1));
 		frame.setSize(640, 480);
@@ -72,6 +76,25 @@ public class ClientMain {
 
 				}
 			});
+			
+			// R¸ckroute f¸r die Antwort des Brokers mit dem Bankangebot anlegen
+			ctx.addRoutes(new RouteBuilder() {
+
+				@Override
+				public void configure() throws Exception {
+					// Kafka Producer Endpoint URI
+					String fromKafka = "kafka:broker-response?brokers=localhost:9092";
+
+					// 
+					from(fromKafka).process(e -> {
+						String answer = e.getIn().getBody(String.class);
+						System.out.println(answer);
+					});
+					
+				}
+						
+			});
+					
 
 			// Camel Context starten
 			ctx.start();
@@ -81,7 +104,7 @@ public class ClientMain {
 			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);
 			
-			Thread.sleep(2000);
+			//Thread.sleep(2000);
 
 			// Producer und CamelContext schlieﬂen
 			producerTemplate.stop();

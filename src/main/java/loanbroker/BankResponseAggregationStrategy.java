@@ -1,6 +1,7 @@
 package loanbroker;
 
 import org.apache.camel.AggregationStrategy;
+import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Predicate;
 
@@ -11,6 +12,7 @@ public class BankResponseAggregationStrategy implements AggregationStrategy, Pre
 
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 		
+		CamelContext ctx = oldExchange.getContext();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode obj = mapper.createObjectNode();
