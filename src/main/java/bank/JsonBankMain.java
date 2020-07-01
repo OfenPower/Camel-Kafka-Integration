@@ -102,14 +102,5 @@ class JsonBankProcessor implements Processor{
         System.out.println("Send the following response: " + responseJson);
         exchange.getIn().setBody(responseJson);
         exchange.getIn().setHeader("type","json");
-
-        // Correlation Key f�rs Aggregate
-     	int corrId = 0;
-     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-     	DataOutputStream dos = new DataOutputStream(bos);
-     	dos.writeInt(corrId);
-     	dos.flush();
-     	byte[] bytes = bos.toByteArray();
-     	exchange.getIn().setHeader("corrId", bytes);
     }
 }

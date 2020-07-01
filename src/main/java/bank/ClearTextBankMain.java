@@ -71,16 +71,5 @@ class ClearTextBankProcessor implements Processor
                 + ",grantedCredit " + requestedFunds
                 + ",interestRatePerMonth " + interestRate
                 + ",correlationId " + correlationId);
-        
-        // Correlation Key f�rs Aggregate
-     	int corrId = 0;
-     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-     	DataOutputStream dos = new DataOutputStream(bos);
-     	dos.writeInt(corrId);
-     	dos.flush();
-     	byte[] bytes = bos.toByteArray();
-     	exchange.getIn().setHeader("corrId", bytes);
-        
-        System.out.println("Send the following response: " + exchange.getIn().getBody(String.class));
     }
 }
