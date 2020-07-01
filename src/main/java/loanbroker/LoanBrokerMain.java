@@ -11,7 +11,7 @@ public class LoanBrokerMain {
 		// Banken weiterleitet
 		LoanBrokerRoute loanBrokerRoute = new LoanBrokerRoute();
 		BrokerBankRoute brokerBankRoute = new BrokerBankRoute();
-		BrokerLoanResponseRoute brokerLoanResponseRoute = new BrokerLoanResponseRoute();
+		LoanBrokerResponseRoute brokerLoanResponseRoute = new LoanBrokerResponseRoute();
 		
 		CamelContext ctx = new DefaultCamelContext();
 		ctx.setTracing(true);

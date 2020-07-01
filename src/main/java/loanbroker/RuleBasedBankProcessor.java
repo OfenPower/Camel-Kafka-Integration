@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.camel.support.SimpleRegistry;
 
 public class RuleBasedBankProcessor implements Processor {
 
@@ -29,28 +30,29 @@ public class RuleBasedBankProcessor implements Processor {
 		ArrayNode arrayNode = obj.putArray("bankList");
 
 		// Es gibt testweise nur drei Banken bank01, bank02, bank03
-		// Die Bank "bank01" erhält jede Anfrage, unabhängig vom Credit Score
+		// Die Bank "bank01" erhï¿½lt jede Anfrage, unabhï¿½ngig vom Credit Score
 		arrayNode.add("bank01");
-		
-		// bank02 interessiert sich für CreditRequests mit einem CreditScore von 5 oder besser
+
+		// bank02 interessiert sich fï¿½r CreditRequests mit einem CreditScore von 5 oder besser
 		if(creditScore >= 5) {
 			arrayNode.add("bank02");
 		}
-		// bank03 interessiert sich für nur für die besten Requests mit dem höchsten CreditScore
+		// bank03 interessiert sich fï¿½r nur fï¿½r die besten Requests mit dem hï¿½chsten CreditScore
 		if(creditScore == 10) {
 			arrayNode.add("bank03");
 		}
 		
-		// Correlation Id fürs spätere Aggregate in den Body hinzufügen
-		obj.put("correlationId", correlationId++);
+		// Correlation Id fï¿½rs spï¿½tere Aggregate in den Body hinzufï¿½gen
+		obj.put("correlationId", correlationId); // fix
 		
 		System.out.println(node.toPrettyString());
 		
 		// json mit Bankenliste rausschicken
 		exchange.getIn().setBody(node.toString());
-		
-		
-		
+
+		ExpectedResponseDatabase.getInstance().map.put(correlationId,arrayNode.size());
+		System.out.println("Added <"+correlationId + "," + arrayNode.size() + "> to the database.");
+		correlationId++;
 	}
 
 }

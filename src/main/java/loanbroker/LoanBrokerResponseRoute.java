@@ -2,7 +2,7 @@ package loanbroker;
 
 import org.apache.camel.builder.RouteBuilder;
 
-public class BrokerLoanResponseRoute extends RouteBuilder {
+public class LoanBrokerResponseRoute extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
@@ -15,12 +15,10 @@ public class BrokerLoanResponseRoute extends RouteBuilder {
 			.when(simple("${header.type} == 'clearText'")).bean(Normalizer.class, "normalizeClearText")
 		.end()
 		//.process(new CorrelationIdPrintProcessor())
-		// Step 2: Aggregate, sodass aus allen Angeboten das Beste für den Kunden zurückgeliefert wird
+		// Step 2: Aggregate, sodass aus allen Angeboten das Beste fï¿½r den Kunden zurï¿½ckgeliefert wird
 		.aggregate(new CorrelationExpression(), new BankResponseAggregationStrategy()).completionTimeout(10000)
-		.process(new PrintMessageProcessor());
-		//.to("kafka:broker-response?brokers=localhost:9092");
-	
-	
+		.process(new CleanUpProcessor())
+		.to("kafka:broker-response?brokers=localhost:9092");
 	}
 
 }
