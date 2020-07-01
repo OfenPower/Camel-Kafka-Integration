@@ -38,7 +38,7 @@ public class BankResponseAggregationStrategy implements AggregationStrategy, Pre
 
 			if (oldExchange == null)
 			{
-				newObj.put("expectedResponseCount",ExpectedResponseDatabase.getInstance().map.get(newNode.get("correlationId")));
+				newObj.put("expectedResponseCount",ExpectedResponseDatabase.getInstance().map.get(newNode.get("correlationId").asInt()));
 				newObj.put("receivedResponseCount",1);
 				newExchange.getIn().setBody(newObj.toString());
 				return newExchange;
@@ -52,9 +52,11 @@ public class BankResponseAggregationStrategy implements AggregationStrategy, Pre
 
 			if(oldInterest <= newInterest){
 				oldObj.put("receivedResponseCount",oldObj.get("receivedResponseCount").asInt() +1);
+				oldObj.put("expectedResponseCount",ExpectedResponseDatabase.getInstance().map.get(newNode.get("correlationId").asInt()));
 				newExchange.getIn().setBody(oldObj.toString());
 			} else {
 				newObj.put("receivedResponseCount",oldObj.get("receivedResponseCount").asInt() +1);
+				newObj.put("expectedResponseCount",ExpectedResponseDatabase.getInstance().map.get(newNode.get("correlationId").asInt()));
 				newExchange.getIn().setBody(newObj.toString());
 			}
 			return newExchange;

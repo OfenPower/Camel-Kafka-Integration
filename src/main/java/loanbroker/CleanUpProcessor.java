@@ -7,7 +7,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 public class CleanUpProcessor implements Processor {
-    
+
     @Override
     public void process(Exchange exchange) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -15,6 +15,8 @@ public class CleanUpProcessor implements Processor {
         ObjectNode objNode = (ObjectNode)jsonNode;
         objNode.remove("receivedResponseCount");
         objNode.remove("expectedResponseCount");
+        objNode.remove("correlationId");
         exchange.getIn().setBody(objNode.toString());
+        System.out.println("CleanMessage: " + objNode.toPrettyString());
     }
 }
