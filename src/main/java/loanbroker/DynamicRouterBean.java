@@ -1,20 +1,24 @@
 package loanbroker;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.camel.RecipientList;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.camel.RecipientList;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class DynamicRouterBean {
 
     @RecipientList
     public Set<String> route(String body)
     {
+    	// Set der Banken an die der LoanRequest gesendet werden soll, in URI.
+    	// Die Werte im Set sind URI der Form "direct:bank01, direct:bank02, etc."
         Set<String> result = new HashSet<>();
-
+        
+        // Json bankList-Feld iterieren, Banken entnehmen und dem Bankenset hinzufügen
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode node = mapper.readTree(body).get("bankList");
@@ -34,6 +38,8 @@ public class DynamicRouterBean {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        
+        // Set an den Multicast zurückliefern
         return result;
     }
 

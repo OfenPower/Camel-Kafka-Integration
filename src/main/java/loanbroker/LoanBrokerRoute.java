@@ -6,8 +6,11 @@ public class LoanBrokerRoute extends RouteBuilder {
 
 	@Override
 	public void configure() {
-
+		
+		// URI Route, welche vom Kafkatopic "loan-request" liest
 		String fromKafka = "kafka:loan-request?brokers=localhost:9092&groupId=loanBroker&valueDeserializer=loanbroker.LoanRequestMessageDeserializer";
+		
+		// Routenaufbau
 		from(fromKafka)
 				// translate the LoanRequestMessage to canonical Json model
 				/*
@@ -40,9 +43,13 @@ public class LoanBrokerRoute extends RouteBuilder {
 				*/
 				.process(new RuleBasedBankProcessor())
 				// send the request to the three banks and prepare the reply message
+				// Folgender Codeblock implementiert das "Recipient-List"-Pattern
 				.multicast().parallelProcessing()
+					// Die Zielbanken des Multicasts werden in der Klasse "DynamicRouterBean" in der Methode "route" ermittelt.
 					.bean(DynamicRouterBean.class,"route")
 				.end();
+		
+		
 				
 	}
 

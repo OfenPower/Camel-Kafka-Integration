@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/*
+ * Content Enricher-Processor, welche die canonical .json Datei um das 
+ * Feld "CreditScore" erweitert
+ */
 public class CreditAgencyProcessor implements Processor {
 
 	@Override
@@ -15,16 +19,16 @@ public class CreditAgencyProcessor implements Processor {
 		// json String lesen und Credit Score anhand der eingegebenen LoanRequest Werte
 		// ermitteln
 		String jsonString = exchange.getIn().getBody(String.class);
+		
+		// Werte aus json auslesen
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = mapper.readTree(jsonString);
 		ObjectNode obj = (ObjectNode) node;
-
-		// Werte aus json auslesen
 		double creditRequest = node.get("creditRequest").asDouble();
 		double currentCapital = node.get("currentCapital").asDouble();
 		double monthlyIncome = node.get("monthlyIncome").asDouble();
 
-		// Score zwischen 1-10 vergeben
+		// Credit Score zwischen 1 (schlecht) und 10 (perfekt) vergeben
 		int score = 1;
 		// Wenn mehr Kapital als CreditRequest vorhanden ist => Beste Wertung
 		if (currentCapital >= creditRequest) {

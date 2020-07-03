@@ -14,7 +14,6 @@ public class LoanBrokerResponseRoute extends RouteBuilder {
 			.when(simple("${header.type} == 'xml'")).bean(Normalizer.class, "normalizeXml")
 			.when(simple("${header.type} == 'clearText'")).bean(Normalizer.class, "normalizeClearText")
 		.end()
-		//.process(new CorrelationIdPrintProcessor())
 		// Step 2: Aggregate, sodass aus allen Angeboten das Beste f�r den Kunden zur�ckgeliefert wird
 		.aggregate(new CorrelationExpression(), new BankResponseAggregationStrategy()).completionTimeout(10000)
 		.process(new CleanUpProcessor())

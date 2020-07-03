@@ -5,6 +5,10 @@ import java.util.Map;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.common.serialization.Deserializer;
 
+/*
+ * Deserializer für eine LoanRequestMessage.
+ * Mit dieser Klasse deserialisiert Kafka ein LoanRequestMessage Objekt aus einem byte[] Array
+ */
 public class LoanRequestMessageDeserializer implements Deserializer<LoanRequestMessage> {
 
 	@Override

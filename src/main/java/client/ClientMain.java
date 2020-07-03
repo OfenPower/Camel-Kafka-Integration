@@ -18,6 +18,9 @@ import loanbroker.LoanRequestMessage;
 public class ClientMain {
 
 	public static void main(String[] args) {
+		/*
+		 * UI für Client Loan Request starten
+		 */
 		JFrame frame = new JFrame();
 
 		JLabel label1 = new JLabel("Credit Request");
@@ -55,15 +58,15 @@ public class ClientMain {
 
 	// Startet einen LoanRequest mit den Daten Credit Request, Current Capital und
 	// Monthly Income
-	public static void startLoanRequest(double cr, double cc, double mi) {
+	public static void startLoanRequest(double creditRequest, double currentCapital, double monthlyIncome) {
 		try {
 			// Loan Request Werte in Message-Objekt verpacken
-			LoanRequestMessage loanRequestMessage = new LoanRequestMessage(cr, cc, mi);
+			LoanRequestMessage loanRequestMessage = new LoanRequestMessage(creditRequest, currentCapital, monthlyIncome);
 
 			// CamelContext starten initialisieren
 			CamelContext ctx = new DefaultCamelContext();
 
-			// Producer Route zum Broker über Kafka aufbauen
+			// Producer Route zum Loan Broker über Kafka aufbauen
 			ctx.addRoutes(new RouteBuilder() {
 
 				@Override
@@ -99,7 +102,7 @@ public class ClientMain {
 			// Camel Context starten
 			ctx.start();
 
-			// loanRequestMessage Objekt an LoanRequestBrokerRoute schicken
+			// loanRequestMessage Objekt an direct:start und damit an Kafka schicken
 			ProducerTemplate producerTemplate = ctx.createProducerTemplate();
 			producerTemplate.start();
 			producerTemplate.sendBody("direct:start", loanRequestMessage);

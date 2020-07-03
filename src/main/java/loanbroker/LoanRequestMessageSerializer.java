@@ -5,6 +5,10 @@ import java.util.Map;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.common.serialization.Serializer;
 
+/*
+ * Serializer für eine LoanRequestMessage.
+ * Mit dieser Klasse serialisiert Kafka ein LoanRequestMessage Objekt in ein byte[] Array
+ */
 public class LoanRequestMessageSerializer implements Serializer<LoanRequestMessage> {
 
 	@Override
