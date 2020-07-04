@@ -8,8 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bank.JsonBankMain;
 
+/*
+ * Translator-Processor, welcher die eingehende .json Message für die Bank anpasst.
+ * Die Bankenliste wird hier entfernt
+ */
 public class ToJsonBankTranslator implements Processor {
-
 
     /*
     Translates a message from the given format
@@ -31,13 +34,10 @@ public class ToJsonBankTranslator implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
 
-        ObjectMapper mapper = new ObjectMapper();
-
+        // .json Message in neue .json Datei mit anderen Feldnamen übersetzen
+    	ObjectMapper mapper = new ObjectMapper();
         JsonNode inputNode = mapper.readTree(exchange.getIn().getBody(String.class));
-        //JsonNode outputNode = mapper.createObjectNode();
-
         JsonBankMain.Request request = new JsonBankMain.Request();
-
         request.requestedFunds = inputNode.get("creditRequest").asDouble();
         request.startCapital = inputNode.get("currentCapital").asDouble();
         request.monthlyIncome = inputNode.get("monthlyIncome").asDouble();

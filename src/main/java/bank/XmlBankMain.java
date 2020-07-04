@@ -32,13 +32,16 @@ public class XmlBankMain {
 		public int correlationId;
 	}
 
-
+	/*
+	 * Startet die Json-Bank, welche auf dem Kafka-Topic "bank02" lauscht und für
+	 * einen CreditRequest ein Angebot zurücksendet 
+	 */
 	public static void main(String[] args) {
 		
-		// Startet den Broker, welcher den CreditRequest des Clients verarbeitet und an die
-		// Banken weiterleitet
+		// Route zwischen LoanBroker und Bank
 		XmlBankRoute xmlBankRoute = new XmlBankRoute();
 
+		// CamelContext starten
 		CamelContext ctx = new DefaultCamelContext();
 		try {
 			ctx.addRoutes(xmlBankRoute);
@@ -55,23 +58,31 @@ public class XmlBankMain {
 
 }
 
+/*
+ * Processor, welcher für einen CreditRequest ein Angebot berechnet
+ */
 class XmlBankRoute extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
 		
-		// übersetzte Message aus Kafka lesen und verarbeiten
+		// Messages vom Topic "bank02" lesen
 		from("kafka:bank02?brokers=localhost:9092&groupId=xmlBank")
-			.process(new XmlBankProcessor())
+		// Angebot berechnen
+		.process(new XmlBankProcessor())
+		// Angebot an Topic "loan-response" zurücksenden
 		.to("kafka:loan-response?brokers=localhost:9092");
 	}
 	
 }
 
+/*
+ * Processor, welcher für einen CreditRequest ein Angebot berechnet
+ */
 class XmlBankProcessor implements Processor {
 	
-    static int creditDuration = 10*12; // 10 years
-    static double interestRate = 0.05; // 5%
+    static int creditDuration = 10*12; // 10 Jahre Kreditlaufzeit
+    static double interestRate = 0.05; // 5% Zinssatz (semi-gut)
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
@@ -95,8 +106,10 @@ class XmlBankProcessor implements Processor {
 		// XML Antwortobjekt zum String parsen und als Antwortmessage weiterleiten
 		String xmlResponseString = xmlMapper.writeValueAsString(xmlResponse);
 		System.out.println("Send the following response: " + xmlResponseString);
-		exchange.getIn().setBody(xmlResponseString);
+		
+		// Angebotsmessage versenden
 		exchange.getIn().setHeader("type", "xml");
+		exchange.getIn().setBody(xmlResponseString);
 	}
 }
 

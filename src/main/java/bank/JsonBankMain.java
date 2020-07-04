@@ -25,10 +25,16 @@ public class JsonBankMain {
         public double interestRatePerMonth;
         public int correlationId;
     }
-
+    
+    /*
+	 * Startet die Json-Bank, welche auf dem Kafka-Topic "bank01" lauscht und für
+	 * einen CreditRequest ein Angebot zurücksendet 
+	 */
     public static void main(String[] args) {
+    	// Route zwischen LoanBroker und Bank 
         JsonBankRoute route = new JsonBankRoute();
-
+        
+        // Camel Context starten
         CamelContext ctx = new DefaultCamelContext();
         try{
             ctx.addRoutes(route);
@@ -44,16 +50,27 @@ public class JsonBankMain {
 
 }
 
+/*
+ * Route zwischen LoanBroker und Bank
+ */
 class JsonBankRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
+    	// Messages vom Topic "bank01" lesen
         String fromKafka = "kafka:bank01?brokers=localhost:9092&groupId=jsonBank";
+        
+        // Angebot an Topic "loan-response" zurücksenden
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
+        
+        // Route aufbauen
         from(fromKafka).process(new JsonBankProcessor()).to(toKafka);
     }
 }
 
+/*
+ * Processor, welcher für einen CreditRequest ein Angebot berechnet
+ */
 class JsonBankProcessor implements Processor{
 
     /* IN
@@ -72,8 +89,8 @@ class JsonBankProcessor implements Processor{
     }
     */
 
-    static int creditDuration = 10*12; // 10 years
-    static double interestRate = 0.1; // 10%
+    static int creditDuration = 10*12; // 10 Jahre Laufzeit
+    static double interestRate = 0.1; // 10% Zinssatz (schlecht)
 
     @Override
     public void process(Exchange exchange) throws Exception {
@@ -98,7 +115,9 @@ class JsonBankProcessor implements Processor{
         String responseJson = mapper.writeValueAsString(response);
 
         System.out.println("Send the following response: " + responseJson);
-        exchange.getIn().setBody(responseJson);
+        
+        // Angebotsmessage versenden
         exchange.getIn().setHeader("type","json");
+        exchange.getIn().setBody(responseJson);
     }
 }

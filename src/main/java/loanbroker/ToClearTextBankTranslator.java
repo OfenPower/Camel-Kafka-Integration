@@ -6,6 +6,11 @@ import org.apache.camel.Processor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+/*
+ * Translator-Processor, welcher die eingehende .json Message für die Klartext-Bank in eine .txt Datei umwandelt.
+ * Die Bankenliste wird hier entfernt
+ */
 public class ToClearTextBankTranslator implements Processor {
     /*
      Translates a message from the given format
@@ -17,6 +22,7 @@ public class ToClearTextBankTranslator implements Processor {
          "bankList" : [bank01, bank02, bank03]
      }
      to the format required by the JsonBank
+     
      requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5
 
       */

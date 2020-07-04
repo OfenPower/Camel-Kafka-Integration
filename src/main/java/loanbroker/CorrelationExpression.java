@@ -6,14 +6,15 @@ import org.apache.camel.Expression;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/*
+ * CorrelationExpression fürs Aggregate, welche die "correltationId" einer Message
+ * zurückliefert, damit der Aggregator die Eingangsmessages damit zuordnen kann
+ */
 public class CorrelationExpression implements Expression {
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T evaluate(Exchange exchange, Class<T> type) {
-		
-		//System.out.println("CorrelationExpression:");
-		//System.out.println(exchange.getIn().getBody(String.class));
 		
 		String jsonString = exchange.getIn().getBody(String.class);
 		ObjectMapper mapper = new ObjectMapper();

@@ -9,10 +9,17 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
 public class ClearTextBankMain {
-
+	
+	/*
+	 * Startet die ClearText-Bank, welche auf dem Kafka-Topic "bank03" lauscht und für
+	 * einen CreditRequest ein Angebot zurücksendet 
+	 */
     public static void main(String[] args) {
 
+    	// Route zwischen LoanBroker und Bank aufbauen
         ClearTextBankRoute route = new ClearTextBankRoute();
+        
+        // Camel Context starten
         CamelContext ctx = new DefaultCamelContext();
         try{
             ctx.addRoutes(route);
@@ -30,28 +37,40 @@ public class ClearTextBankMain {
 
 }
 
+/*
+ * Route zwischen LoanBroker und Bank
+ */
 class ClearTextBankRoute extends RouteBuilder
 {
     @Override
     public void configure() throws Exception {
+    	// Messages vom Topic "bank03" lesen
         String fromKafka = "kafka:bank03?brokers=localhost:9092&groupId=clearTextBank";
+        
+        // Angebot an Topic "loan-response" zurücksenden
         String toKafka = "kafka:loan-response?brokers=localhost:9092";
+        
+        // Route aufbauen
         from(fromKafka).process(new ClearTextBankProcessor()).to(toKafka);
     }
 }
 
+/*
+ * Processor, welcher für einen CreditRequest ein Angebot berechnet
+ */
 class ClearTextBankProcessor implements Processor
 {
-    // requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5
-
-    static int creditDuration = 10*12;
-    static double interestRate = 0.02;
+    static int creditDuration = 10*12;	// 10 Jahre Kreditlaufzeit
+    static double interestRate = 0.02;	// 2% Zinssatz (sehr gut)
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        String msg = exchange.getIn().getBody(String.class);
+        
+    	// Eingehende Message:
+    	// requestedFunds 123.4,startCapital 123.4,monthlyIncome 123.4,creditScore 5
+    	String msg = exchange.getIn().getBody(String.class);
         String fields[] = msg.split(",");
-
+        
         System.out.println("Received the following message: " + msg);
 
         double requestedFunds = Double.parseDouble(fields[0].split(" ")[1]);
@@ -62,12 +81,18 @@ class ClearTextBankProcessor implements Processor
 
         double monthlyPremiums = requestedFunds / creditDuration;
         monthlyPremiums += monthlyPremiums * interestRate;
-
-        exchange.getIn().setHeader("type","clearText");
-        exchange.getIn().setBody("monthlyPremiums " + monthlyPremiums
+        
+        // Antwortmessage erzeugen
+        String responseClearText = "monthlyPremiums " + monthlyPremiums
                 + ",durationInMonths " + creditDuration
                 + ",grantedCredit " + requestedFunds
                 + ",interestRatePerMonth " + interestRate
-                + ",correlationId " + correlationId);
+                + ",correlationId " + correlationId;
+        
+        System.out.println("Send the following response: " + responseClearText);
+        
+        // Angebotsmessage versenden
+        exchange.getIn().setHeader("type","clearText");
+        exchange.getIn().setBody(responseClearText);
     }
 }

@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/*
+ * Translator-Processor, welcher die eingehende .json Message für die Xml-Bank in eine .xml umwandelt.
+ * Die Bankenliste wird hier entfernt
+ */
 public class ToXmlBankTranslator implements Processor {
 
 	/*
@@ -18,14 +22,14 @@ public class ToXmlBankTranslator implements Processor {
 		"creditScore" : 5,
 		"bankList" : [bank01, bank02, bank03]
 	}
+	
     to the format required by the Xml Bank:
     
-    <?xml version="1.0" encoding="UTF-8?">
     <CreditRequest>
-		<creditRequest>23623.0</creditRequest>
-		<currentCapital>2.62346423E8</currentCapital>
-		<monthlyIncome>236234.0</monthlyIncome>
-		<creditScore>10</creditScore>
+		<creditRequest>123.4</creditRequest>
+		<currentCapital>123.4</currentCapital>
+		<monthlyIncome>123.4</monthlyIncome>
+		<creditScore>5</creditScore>
 	</CreditRequest>
 	
      */

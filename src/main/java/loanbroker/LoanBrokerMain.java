@@ -13,7 +13,7 @@ public class LoanBrokerMain {
 		LoanBrokerRoute loanBrokerRoute = new LoanBrokerRoute();
 		
 		// Dynamische Routen zu den Banken aufbauen
-		BrokerBankRoute brokerBankRoute = new BrokerBankRoute();
+		LoanBrokerBankRoute brokerBankRoute = new LoanBrokerBankRoute();
 		
 		// Rückroute vom LoanBroker zum Client aufbauen, welche das aggregierte Angebot enthält
 		LoanBrokerResponseRoute brokerLoanResponseRoute = new LoanBrokerResponseRoute();

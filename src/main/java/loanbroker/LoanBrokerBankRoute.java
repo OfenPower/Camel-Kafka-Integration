@@ -2,7 +2,7 @@ package loanbroker;
 
 import org.apache.camel.builder.RouteBuilder;
 
-public class BrokerBankRoute extends RouteBuilder {
+public class LoanBrokerBankRoute extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
