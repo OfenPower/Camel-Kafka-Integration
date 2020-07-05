@@ -29,8 +29,8 @@ public class ClientMain {
 		JTextField text1 = new JTextField();
 		JTextField text2 = new JTextField();
 		JTextField text3 = new JTextField();
-		JTextField text4 = new JTextField("Received Offer:");
-		JTextField text5 = new JTextField("Received Offer:");
+		//JTextField text4 = new JTextField("Received Offer:");
+		//JTextField text5 = new JTextField("Received Offer:");
 		JButton button = new JButton("Send Request");
 
 		button.addActionListener(e -> {
@@ -47,8 +47,8 @@ public class ClientMain {
 		frame.add(label3);
 		frame.add(text3);
 		frame.add(button);
-		frame.add(text4);
-		frame.add(text5);
+		//frame.add(text4);
+		//frame.add(text5);
 
 		frame.setLayout(new GridLayout(7, 1));
 		frame.setSize(640, 480);
@@ -61,6 +61,10 @@ public class ClientMain {
 	public static void startLoanRequest(double creditRequest, double currentCapital, double monthlyIncome) {
 		try {
 			// Loan Request Werte in Message-Objekt verpacken
+			// Ein LoanRequest besteht aus
+			// - CreditRequest
+			// - CurrentCapital 
+			// - monatliches Einkommen
 			LoanRequestMessage loanRequestMessage = new LoanRequestMessage(creditRequest, currentCapital, monthlyIncome);
 
 			// CamelContext starten initialisieren
