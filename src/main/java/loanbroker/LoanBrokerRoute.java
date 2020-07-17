@@ -38,8 +38,14 @@ public class LoanBrokerRoute extends RouteBuilder {
 					"currentCapital" : 123.4,
 					"monthlyIncome" : 123.4,
 					"creditScore" : 5,
-					"bankList" : [bank01, bank02, bank03]
+					"bankList" : [bank01, bank02, bank03],
+					"correlationId" : 0
 				}
+				*/
+				/* 
+				Trägt folgendes in die Datenbank ein:
+				 	<correlationId, bankList.size()>
+				 	Bsp: <0, 2>
 				*/
 				.process(new RuleBasedBankProcessor())
 				// send the request to the three banks and prepare the reply message
