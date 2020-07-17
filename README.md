@@ -18,7 +18,9 @@ Step 2:
 Start Kafka Server:
   .\bin\windows\kafka-server-start.bat .\config\server.properties
 
-Step 3: (only once)
+Step 3: 
+
+(only once)
 
 Create the following Kafka-Topics
 - loan-request
@@ -28,8 +30,7 @@ Create the following Kafka-Topics
 - loan-response
 - broker-response
 
-   with this command:
-  .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic <name-of-the-topic>
+ .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic name-of-the-topic
 
 Step 4: 
 
