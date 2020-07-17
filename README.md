@@ -4,6 +4,8 @@ Developed with
 - Apache Kafka (Messaging System) and 
 - Apache Camel (Integration Framework)
 
+Code Folder: /src
+
 -------------------------------------------------------------------------------
 
 Steps for launching the applications:
@@ -52,6 +54,8 @@ Done. The Loan Broker will now contact the banks and check their offers. Finally
 Step 7: 
 
 Repeat with new client loan requests.
+
+-------------------------------------------------------------------------------
 
 
 
